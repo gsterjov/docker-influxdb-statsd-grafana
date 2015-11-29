@@ -1,0 +1,25 @@
+influxdb:
+  build: influxdb
+  ports:
+   - "8083:8083"
+   - "8086:8086"
+  volumes:
+   - <path to data>:/data
+
+statsd:
+  build: statsd
+  ports:
+   - "8125:8125/udp"
+  links:
+   - influxdb
+  environment:
+    INFLUXDB_DATABASE: "test"
+    INFLUXDB_USERNAME: ""
+    INFLUXDB_PASSWORD: ""
+
+grafana:
+  image: grafana/grafana
+  ports:
+   - "3000:3000"
+  volumes:
+   - <path to data>:/var/lib/grafana
